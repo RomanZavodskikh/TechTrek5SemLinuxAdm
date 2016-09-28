@@ -1,0 +1,13 @@
+You can run
+> sudo ./homework2.sh users
+in order to create users
+user1, user2, user3 with passwords
+pass1, pass2, pass3 respectively.
+
+Use
+userdel -fr user1
+userdel -fr user2
+userdel -fr user3
+to delete all users.
+
+The last two string in "users" file is invalid in order to check that useradd will exit with error.
