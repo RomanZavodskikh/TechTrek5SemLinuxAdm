@@ -1,4 +1,16 @@
 #!/bin/bash
+if [ ! -n "$1" ] 
+then
+	echo "Give a FILE!!!!"
+	exit 1
+fi
+
+if [ ! -f $1 ]
+then
+	echo "File does not exist"
+	exit 1
+fi
+
 for str in `cat $1`
 do
 	user=`echo $str | cut -d: -f1`
