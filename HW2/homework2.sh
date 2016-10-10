@@ -29,7 +29,8 @@ do
 	fi
 	if [ -z $pass ]
 	then
-		echo "WARNING: The empty pass in " $str
+		echo "ERROR: The empty pass in " $str
+		exit 1
 	fi
 	if [ -z $homedir ]
 	then
