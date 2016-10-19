@@ -1,4 +1,5 @@
 #!/bin/bash
+DEF_SHELL=/bin/bash
 
 #Checking existence of the file
 if [ ! -n "$1" ] 
@@ -13,13 +14,18 @@ then
 	exit 1
 fi
 
+IFS=$'\n'
 for str in `cat $1`
 do
-	#processing one field "user:groups:pass:homedir"
+IFS=' '
+	#processing one field "user:groups:hash:homedir:uid:shell:description"
 	user=`echo $str | cut -d: -f1`
 	grps=`echo $str | cut -d: -f2`
-	pass=`echo $str | cut -d: -f3`
+	hash=`echo $str | cut -d: -f3`
 	homedir=`echo $str | cut -d: -f4`
+	uid=`echo $str | cut -d: -f5`
+	shell=`echo $str | cut -d: -f6`
+	desc=`echo $str | cut -d: -f7`
 
 	#checking if some args are empty
 	if [ -z $user ]
@@ -27,15 +33,25 @@ do
 		echo "ERROR: The empty name of user in " $str
 		exit 1
 	fi
-	if [ -z $pass ]
+	if [ -z $hash ]
 	then
-		echo "ERROR: The empty pass in " $str
+		echo "ERROR: The empty hash in " $str
 		exit 1
 	fi
 	if [ -z $homedir ]
 	then
 		echo "WARNING: No home directory given to $user. Using default value: /home/$user"
 		homedir="/home/$user"
+	fi
+	if [ ! $uid -ge 0 ] # test if $uid is natural number
+	then
+		echo "ERROR: No UID in " $str
+		exit 1
+	fi
+	if [ -z $shell ]
+	then
+		echo "WARNING: No shell specified, using $DEF_SHELL in $str"
+		$shell="/bin/bash"
 	fi
 
 	#creating some groups of they don't exist
@@ -63,21 +79,30 @@ do
 	
 	#actions taken if the user doesn't exist yet
 	args=""
-	if [ -n "$pass" ]
+	if [ -n "$hash" ]
 	then
-		args=$args" -p $(openssl passwd -1 $pass)"
+		args="$args -p $hash"
 	fi
 	if [ -n "$homedir" ]
 	then
-		args=$args" -d $homedir"
+		args="$args -d $homedir"
 	fi
 	if [ -n "$grps" ]
 	then
-		args=$args" -G $grps"
+		args="$args -G $grps"
 	fi
-	useradd $args $user
-
+	if [ -n "$uid" ]
+	then
+		args="$args -u $uid"
+	fi
+	if [ -n "$shell" ]
+	then
+		args="$args -s $shell"
+	fi
+	if [ -n "$desc" ]
+	then
+		desc_f=" -c "
+	fi
+	useradd $args $desc_f "$desc" $user
 done
-
-echo "Don't forget to delete $1 in order to avoid passwords leakage"
 
