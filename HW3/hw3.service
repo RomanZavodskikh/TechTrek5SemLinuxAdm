@@ -1,0 +1,17 @@
+[Unit]
+Description=TT Homework Number 3
+Documentation=
+After=
+Wants=
+
+[Service]
+EnvironmentFile=
+ExecStart=/usr/sbin/hw3
+ExecReload=/usr/sbin/hw3
+KillMode=process
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=
+
