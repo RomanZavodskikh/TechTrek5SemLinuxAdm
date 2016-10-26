@@ -1,2 +1,2 @@
 #!/bin/sh
-df -kh > /var/log/HW3/`date +HW3LOG\%d\%m\%Y_\%H\%M` | logger
+du -ch / > /var/log/HW3/HW3LOG | logger
