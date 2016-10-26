@@ -1,2 +1,0 @@
-#!/bin/sh
-du -sh /* > /var/log/HW3/`date +HW3LOG_BOOT\%d\%m\%Y_\%H\%M`
