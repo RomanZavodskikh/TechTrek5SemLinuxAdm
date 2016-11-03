@@ -1,2 +1,2 @@
 #!/bin/sh
-du -ch / > /var/log/HW3/HW3LOG | logger
+du -ch / | logger -p local0.info

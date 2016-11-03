@@ -7,4 +7,4 @@
 # |  		|  |  |  |
 # *  		*  *  *  * user-name command to be executed
   */20	 	*  *  *  * root      /usr/sbin/hw3
-  10		0  *  *  * root      /usr/sbin/logrotate -s /var/log/HW3/logrotate.state /etc/hw3_logrotate.conf
+  10		0  *  *  * root      /usr/sbin/logrotate -s /var/log/HW3/logrotate.state /etc/logrotate.d/hw3_logrotate.conf
